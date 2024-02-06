@@ -1,11 +1,14 @@
 package com.dooribun.domain;
 
+import com.dooribun.dto.PostDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,21 +32,30 @@ public class Post {
     @Column(nullable = false)
     private Boolean status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
+
+    @ManyToOne @Setter
+    @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id", nullable = false)
-    private Location location;
+    @OneToMany(mappedBy = "post")
+    private final List<Image> images = new ArrayList<>();
 
     @Builder
-    public Post(String title, String content, LocalDateTime createdAt, Boolean status, Member member, Location location) {
+    public Post(String title, String content, LocalDateTime createdAt, Boolean status, Member member) {
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
         this.status = status;
         this.member = member;
-        this.location = location;
+    }
+
+    public static Post of(PostDTO.CreationReq req, Member member) {
+        return Post.builder()
+                .title(req.getTitle())
+                .content(req.getContent())
+                .createdAt(LocalDateTime.now())
+                .status(Boolean.TRUE)
+                .member(member)
+                .build();
     }
 }

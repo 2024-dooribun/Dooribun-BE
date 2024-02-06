@@ -1,2 +1,10 @@
-package com.dooribun.repository;public interface PostRepository {
+package com.dooribun.repository;
+
+import com.dooribun.domain.Post;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface PostRepository extends JpaRepository<Post, Long> {
+    List<Post> findAll();
 }

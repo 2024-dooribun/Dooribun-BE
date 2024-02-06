@@ -1,5 +1,6 @@
 package com.dooribun.domain;
 
+import com.dooribun.dto.MemberDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,19 +21,24 @@ public class Member {
     @Column(nullable = false)
     private String nickname;
 
+    @Setter
     @Column(nullable = false)
     private String email;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id", nullable = false)
-    private Location location;
-
     @Builder
-    public Member(String uid, String password, String nickname, String email, Location location) {
+    public Member(String uid, String password, String nickname, String email) {
         this.uid = uid;
         this.password = password;
         this.nickname = nickname;
         this.email = email;
-        this.location = location;
+    }
+
+    public static Member of(MemberDTO.CreationReq req) {
+        return Member.builder()
+                .uid(req.getUid())
+                .password(req.getPassword())
+                .nickname(req.getNickname())
+                .email(req.getEmail())
+                .build();
     }
 }
