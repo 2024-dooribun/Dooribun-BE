@@ -4,6 +4,9 @@ import com.dooribun.dto.MemberDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -24,6 +27,9 @@ public class Member {
     @Setter
     @Column(nullable = false)
     private String email;
+
+    @OneToMany(mappedBy = "member")
+    private final List<Image> images = new ArrayList<>();
 
     @Builder
     public Member(String uid, String password, String nickname, String email) {

@@ -34,10 +34,10 @@ public class Post {
 
 
     @ManyToOne @Setter
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Image> images = new ArrayList<>();
 
     @Builder

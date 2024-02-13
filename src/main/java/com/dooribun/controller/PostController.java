@@ -1,6 +1,5 @@
 package com.dooribun.controller;
 
-import com.dooribun.domain.Post;
 import com.dooribun.dto.PostDTO;
 import com.dooribun.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -8,8 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RequestMapping("/post")
@@ -24,7 +21,7 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<PostDTO.DetailInfoRes> getPostDetail(@PathVariable("postId") Long postId) {
+    public ResponseEntity<PostDTO.PostDetailRes> getPostDetail(@PathVariable("postId") Long postId) {
         return ResponseEntity.ok(postService.getPostDetail(postId));
     }
 }

@@ -1,10 +1,13 @@
 package com.dooribun.dto;
 
+import com.dooribun.domain.Image;
 import com.dooribun.domain.Member;
 import com.dooribun.domain.Post;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PostDTO {
     @Getter @Setter
@@ -21,15 +24,20 @@ public class PostDTO {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class DetailInfoRes{
+    public static class PostDetailRes {
         private PostInfo postInfo;
         private MemberInfo memberInfo;
 
-        public static DetailInfoRes of(Post post) {
+        public static PostDetailRes of(Post post) {
             Member member = post.getMember();
-            return DetailInfoRes.builder()
+            List<String> images = post.getImages()
+                    .stream()
+                    .map(Image::getFilePath)
+                    .collect(Collectors.toList());
+
+            return PostDetailRes.builder()
                     .memberInfo(MemberInfo.of(member))
-                    .postInfo(PostInfo.of(post))
+                    .postInfo(PostInfo.of(post, images))
                     .build();
         }
     }
@@ -42,14 +50,16 @@ public class PostDTO {
         private String content;
         private Boolean status;
         private LocalDateTime createdAt;
+        private List<String> imagePaths;
 
-        private static PostInfo of(Post post) {
+        private static PostInfo of(Post post, List<String> imagePaths) {
             return PostInfo.builder()
                     .id(post.getId())
                     .title(post.getTitle())
                     .content(post.getContent())
                     .status(post.getStatus())
                     .createdAt(post.getCreatedAt())
+                    .imagePaths(imagePaths)
                     .build();
         }
     }

@@ -12,19 +12,28 @@ public class Image {
     private Long id;
 
     @Column(nullable = false)
-    private String file_name;
+    private String fileName;
 
     @Column(nullable = false)
-    private String file_path;
+    private String filePath;
+
+    @Column(nullable = false)
+    private Boolean isProfile;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
+    @JoinColumn(name = "post_id")
     private Post post;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     @Builder
-    public Image(String file_name, String file_path, Post post) {
-        this.file_name = file_name;
-        this.file_path = file_path;
+    public Image(String fileName, String filePath, Boolean isProfile, Post post, Member member) {
+        this.fileName = fileName;
+        this.filePath = filePath;
+        this.isProfile = isProfile;
         this.post = post;
+        this.member = member;
     }
 }
